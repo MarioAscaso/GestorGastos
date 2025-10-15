@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestor de Gastos</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* ESTILOS GENERALES */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            padding: 0;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-header {
+            background: rgba(0,0,0,0.2);
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h4 {
+            color: white;
+            margin: 0;
+            font-weight: 300;
+        }
+
+        .sidebar-header i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+
+        .nav-container {
+            padding: 20px 0;
+        }
+
+        .sidebar .nav-link {
+            color: #ecf0f1;
+            padding: 15px 25px;
+            margin: 5px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(52, 152, 219, 0.3);
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-link.active {
+            background: #3498db;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .sidebar .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        .main-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .header-bar {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+
+        .header-bar h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* TARJETAS DE RESUMEN */
+        .card-summary {
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .card-summary:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .ingreso {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .gasto {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+            color: white;
+        }
+
+        .balance {
+            background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+            color: white;
+        }
+
+        .card-summary .card-body {
+            padding: 25px;
+        }
+
+        .card-summary h6 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .card-summary h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .card-summary .fa-2x {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+
+        /* TARJETAS DE CONTENIDO */
+        .content-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .content-card .card-header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 25px;
+            border-radius: 15px 15px 0 0 !important;
+        }
+
+        .content-card .card-title {
+            color: #2c3e50;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .content-card .card-body {
+            padding: 25px;
+        }
+
+        /* FORMULARIO */
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        /* TABLA */
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px #e9ecef;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .table th {
+            border: none;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+            border-color: #f8f9fa;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        .badge {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        /* ALERTAS */
+        .alert {
+            border: none;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+            color: white;
+        }
+
+        /* BOTONES DE ACCIÓN */
+        .btn-outline-primary, .btn-outline-danger {
+            border-radius: 8px;
+            padding: 6px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-danger:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ESTADOS VACÍOS */
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .header-bar {
+                padding: 20px;
+            }
+
+            .card-summary h3 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 sidebar">
+            <div class="sidebar-header">
+                <h4>
+                    <i class="fas fa-wallet"></i> Gestor de Gastos
+                </h4>
+            </div>
+            <div class="nav-container">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/movimientos/nuevo">
+                            <i class="fas fa-plus-circle"></i> Nuevo Movimiento
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 main-content">
+            <!-- Header -->
+            <div class="header-bar">
+                <h1><i class="fas fa-tachometer-alt me-2"></i>Dashboard Financiero</h1>
+            </div>
+
+            <!-- Alertas -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Tarjetas de Resumen -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card card-summary ingreso">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6><i class="fas fa-arrow-up me-2"></i>INGRESOS</h6>
+                                    <h3 th:text="'€ ' + ${#numbers.formatDecimal(totalIngresos, 1, 2)}">€ 0.00</h3>
+                                </div>
+                                <div>
+                                    <i class="fas fa-arrow-up fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-summary gasto">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6><i class="fas fa-arrow-down me-2"></i>GASTOS</h6>
+                                    <h3 th:text="'€ ' + ${#numbers.formatDecimal(totalGastos, 1, 2)}">€ 0.00</h3>
+                                </div>
+                                <div>
+                                    <i class="fas fa-arrow-down fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-summary balance">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6><i class="fas fa-balance-scale me-2"></i>BALANCE</h6>
+                                    <h3 th:text="'€ ' + ${#numbers.formatDecimal(balance, 1, 2)}">€ 0.00</h3>
+                                </div>
+                                <div>
+                                    <i class="fas fa-balance-scale fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario y Tabla -->
+            <div class="row">
+                <!-- Formulario -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card content-card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-plus-circle me-2"></i> Nuevo Movimiento
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/movimientos/guardar}" method="post">
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label">Descripción</label>
+                                    <input type="text" class="form-control" id="descripcion"
+                                           name="descripcion" required placeholder="¿En qué gastaste o ingresaste?">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cantidad" class="form-label">Cantidad (€)</label>
+                                    <input type="number" step="0.01" class="form-control" id="cantidad"
+                                           name="cantidad" required placeholder="0.00">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="categoriaId" class="form-label">Categoría</label>
+                                    <select class="form-select" id="categoriaId" name="categoriaId" required>
+                                        <option value="">Selecciona una categoría</option>
+                                        <option th:each="cat : ${categorias}"
+                                                th:value="${cat.id}"
+                                                th:text="${cat.nombre} + ' (' + ${cat.tipo} + ')'">
+                                        </option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-save me-2"></i> Guardar Movimiento
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla -->
+                <div class="col-lg-8">
+                    <div class="card content-card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-history me-2"></i> Movimientos Recientes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Descripción</th>
+                                        <th>Categoría</th>
+                                        <th>Cantidad</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="mov : ${movimientos}">
+                                        <td th:text="${#temporals.format(mov.fecha, 'dd/MM/yyyy')}"></td>
+                                        <td th:text="${mov.descripcion}"></td>
+                                        <td>
+                                                    <span class="badge"
+                                                          th:style="'background-color: ' + ${mov.categoriaColor} + ';'"
+                                                          th:text="${mov.categoriaNombre}">
+                                                    </span>
+                                        </td>
+                                        <td>
+                                            <strong th:class="${mov.categoriaTipo == 'INGRESO'} ? 'text-success' : 'text-danger'"
+                                                    th:text="'€ ' + ${#numbers.formatDecimal(mov.cantidad, 1, 2)}">
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/movimientos/editar/{id}(id=${mov.id})}"
+                                               class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form th:action="@{/movimientos/eliminar/{id}(id=${mov.id})}"
+                                                  method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                        onclick="return confirm('¿Estás seguro de eliminar este movimiento?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${movimientos.empty}">
+                                        <td colspan="5">
+                                            <div class="empty-state">
+                                                <i class="fas fa-inbox"></i>
+                                                <h5>No hay movimientos registrados</h5>
+                                                <p class="text-muted">Comienza añadiendo tu primer movimiento</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Efectos adicionales
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Dashboard cargado con éxito 🎉");
+
+        // Auto-ocultar alertas después de 5 segundos
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    });
+</script>
+</body>
+</html>
