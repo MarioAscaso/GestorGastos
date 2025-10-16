@@ -29,7 +29,6 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Movimiento> movimientos = new ArrayList<>();
 
-    // Constructores
     public Usuario() {
     }
 
@@ -39,7 +38,6 @@ public class Usuario {
         this.password = password;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

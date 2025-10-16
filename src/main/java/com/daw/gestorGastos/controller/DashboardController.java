@@ -25,7 +25,6 @@ public class DashboardController {
     @GetMapping
     public String dashboard(Model model) {
         try {
-            // Obtener datos para el dashboard
             List<MovimientoDTO> movimientos = movimientoService.obtenerMovimientosDelMes();
             Double totalIngresos = movimientoService.obtenerTotalIngresosDelMes();
             Double totalGastos = movimientoService.obtenerTotalGastosDelMes();
@@ -38,7 +37,6 @@ public class DashboardController {
             System.out.println("Total Ingresos: " + totalIngresos);
             System.out.println("Total Gastos: " + totalGastos);
 
-            // Añadir datos al modelo
             model.addAttribute("movimientos", movimientos);
             model.addAttribute("totalIngresos", totalIngresos);
             model.addAttribute("totalGastos", totalGastos);

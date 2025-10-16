@@ -19,15 +19,14 @@ public class Categoria {
 
     @NotBlank(message = "El tipo es obligatorio")
     @Column(nullable = false)
-    private String tipo; // "INGRESO" o "GASTO"
+    private String tipo;
 
     @Column(nullable = false)
-    private String color = "#007bff"; // Color por defecto
+    private String color = "#007bff";
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Movimiento> movimientos = new ArrayList<>();
 
-    // Constructores
     public Categoria() {
     }
 
@@ -37,7 +36,6 @@ public class Categoria {
         this.color = color;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

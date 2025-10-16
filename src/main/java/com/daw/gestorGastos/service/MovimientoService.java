@@ -3,7 +3,6 @@ package com.daw.gestorGastos.service;
 import com.daw.gestorGastos.model.dto.MovimientoDTO;
 import com.daw.gestorGastos.model.entity.Movimiento;
 import com.daw.gestorGastos.model.entity.Usuario;
-import com.daw.gestorGastos.model.entity.Categoria;
 import com.daw.gestorGastos.repository.MovimientoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +46,6 @@ public class MovimientoService {
     }
 
     public Movimiento guardar(Movimiento movimiento) {
-        // Asignar usuario por defecto si no tiene
         if (movimiento.getUsuario() == null) {
             movimiento.setUsuario(usuarioService.obtenerUsuarioPorDefecto());
         }

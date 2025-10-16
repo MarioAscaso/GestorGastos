@@ -11,7 +11,6 @@ public class MovimientoDTO {
     private String categoriaTipo;
     private String categoriaColor;
 
-    // Constructores
     public MovimientoDTO() {
     }
 
@@ -26,7 +25,6 @@ public class MovimientoDTO {
         this.categoriaColor = categoriaColor;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

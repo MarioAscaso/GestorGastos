@@ -16,7 +16,6 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public Usuario crearUsuarioPorDefecto() {
-        // Para single-user, creamos un usuario por defecto
         Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail("usuario@gestor.com");
         if (usuarioExistente.isPresent()) {
             System.out.println("Usuario existente encontrado: " + usuarioExistente.get().getEmail());

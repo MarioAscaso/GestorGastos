@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -46,7 +45,6 @@ public class MovimientoController {
             System.out.println("Cantidad: " + cantidad);
             System.out.println("Categoría ID: " + categoriaId);
 
-            // Validaciones básicas
             if (descripcion == null || descripcion.trim().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "La descripción es obligatoria");
                 return "redirect:/";
@@ -57,25 +55,21 @@ public class MovimientoController {
                 return "redirect:/";
             }
 
-            // Crear nuevo movimiento
             Movimiento movimiento = new Movimiento();
             movimiento.setDescripcion(descripcion.trim());
             movimiento.setCantidad(cantidad);
             movimiento.setFecha(java.time.LocalDate.now());
 
-            // Asignar usuario por defecto
             Usuario usuario = usuarioService.obtenerUsuarioPorDefecto();
             movimiento.setUsuario(usuario);
             System.out.println("Usuario asignado: " + usuario.getEmail());
 
-            // Buscar y asignar la categoría
             Optional<Categoria> categoriaOpt = categoriaService.obtenerPorId(categoriaId);
             if (categoriaOpt.isPresent()) {
                 Categoria categoria = categoriaOpt.get();
                 movimiento.setCategoria(categoria);
                 System.out.println("Categoría asignada: " + categoria.getNombre());
 
-                // Guardar el movimiento
                 Movimiento movimientoGuardado = movimientoService.guardar(movimiento);
                 System.out.println("Movimiento guardado con ID: " + movimientoGuardado.getId());
 

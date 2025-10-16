@@ -47,7 +47,6 @@ public class Movimiento {
         this.usuario = usuario;
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

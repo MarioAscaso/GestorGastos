@@ -40,7 +40,6 @@ public class CategoriaService {
 
     @PostConstruct
     public void inicializarCategoriasPorDefecto() {
-        // Verificar si ya existen categorías
         if (categoriaRepository.count() == 0) {
             System.out.println("=== INICIALIZANDO CATEGORÍAS POR DEFECTO ===");
 
