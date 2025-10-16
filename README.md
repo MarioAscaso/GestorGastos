@@ -1,4 +1,4 @@
-# 💰 Gestor de Gastos Domésticos
+# Gestor de Gastos Domésticos
 
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen)
 ![Java](https://img.shields.io/badge/Java-21-orange)
@@ -8,17 +8,17 @@
 
 Una aplicación web moderna para gestionar ingresos y gastos domésticos, desarrollada con Spring Boot y una interfaz elegante con Bootstrap.
 
-## ✨ Características
+## Características
 
-- 📊 **Dashboard interactivo** con resumen financiero
-- 💰 **Gestión completa** de ingresos y gastos
-- 🏷️ **Categorización automática** de movimientos
-- 📈 **Estadísticas visuales** en tiempo real
-- 🎨 **Interfaz moderna** con diseño responsive
-- 💾 **Persistencia en MySQL**
-- 🔄 **Operaciones CRUD** completas
+-  **Dashboard interactivo** con resumen financiero
+-  **Gestión completa** de ingresos y gastos
+- ️ **Categorización automática** de movimientos
+-  **Estadísticas visuales** en tiempo real
+-  **Interfaz moderna** con diseño responsive
+-  **Persistencia en MySQL**
+-  **Operaciones CRUD** completas
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Backend
 - **Spring Boot 3.5.6** - Framework principal
@@ -41,17 +41,3 @@ Una aplicación web moderna para gestionar ingresos y gastos domésticos, desarr
 - **IntelliJ IDEA** - IDE
 - **Maven** - Gestión de dependencias
 - **Spring Boot DevTools** - Desarrollo en caliente
-
-## 🚀 Instalación y Configuración
-
-### Prerrequisitos
-- Java 21 o superior
-- MySQL 8.4 o superior
-- Maven 3.6 o superior
-
-### Pasos de Instalación
-
-1. **Clonar el repositorio**
-   ```bash
-   git clone https://github.com/MarioAscaso/GestorGastos
-   cd GestorGastos
